@@ -57,13 +57,12 @@ public class UserServices {
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Resource not found. Id "+id) ;
 		}
-
-
 	}
 
 	public void updateData(User user, User obj) {
 		user.setEmail(obj.getEmail());
 		user.setName(obj.getName());
 	}
+	
 
 }

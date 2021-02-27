@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_category")
 public class Category implements Serializable{
@@ -49,6 +51,7 @@ public class Category implements Serializable{
 		this.name = name;
 	}
 	
+	@JsonIgnore
 	public Set<Task> getTasks() {
 		return tasks;
 	}
