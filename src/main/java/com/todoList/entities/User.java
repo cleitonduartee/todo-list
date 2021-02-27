@@ -19,7 +19,8 @@ public class User implements Serializable{
 	private String name;
 	private String email;
 	
-	//private Set<Task> tasks = new HashSet<>();
+//	@OneToMany(mappedBy = "user")	
+//	private Set<Task> tasks = new HashSet<>();
 	
 	public User() {
 		
