@@ -14,39 +14,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.todoList.entities.Category;
-import com.todoList.services.CategoryServices;
+import com.todoList.entities.Task;
+import com.todoList.services.TaskServices;
 
 @RestController
-@RequestMapping("/categories")
-public class CategoryResource {
+@RequestMapping("/tasks")
+public class TaskResource {
 
 	@Autowired
-	private CategoryServices services;
+	private TaskServices services;
 	
 	@GetMapping
-	public ResponseEntity<List<Category>> findAll(){
-		List<Category> list = services.findAll();
+	public ResponseEntity<List<Task>> findAll(){
+		List<Task> list = services.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Category> findById(@PathVariable Long id){
-		Category cat = services.findById(id);
-		return ResponseEntity.ok().body(cat);
+	public ResponseEntity<Task> findbyId(@PathVariable Long id){
+		Task task = services.findById(id);
+		return ResponseEntity.ok().body(task);
 	}
 	@PostMapping
-	public ResponseEntity<Category> insert (@RequestBody Category cat){
-		cat = services.insert(cat);
-		return ResponseEntity.status(HttpStatus.CREATED).body(cat);
+	public ResponseEntity<Task> insert (@RequestBody Task task){
+		task = services.insert(task);
+		return ResponseEntity.status(HttpStatus.CREATED).body(task);
 	}
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Category> update(@PathVariable Long id,@RequestBody Category cat){
-		cat = services.update(id, cat);
-		return ResponseEntity.ok().body(cat);
+	public ResponseEntity<Task> update(@PathVariable Long id, @RequestBody Task obj){
+		obj = services.update(id,obj);
+		return ResponseEntity.ok().body(obj);
 	}
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete (@PathVariable Long id){
+	public ResponseEntity<Void> delete(@PathVariable Long id){
 		services.delete(id);
 		return ResponseEntity.noContent().build();
 	}
+	
 }
