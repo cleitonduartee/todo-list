@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionSystemException;
 
 import com.todoList.entities.User;
 import com.todoList.repository.UserRepository;
@@ -20,7 +23,7 @@ public class UserServices {
 
 	@Autowired
 	private UserRepository repository;
-
+	
 	public List<User> findAll() {
 		return repository.findAll();
 	}
@@ -33,10 +36,14 @@ public class UserServices {
 	public User insert(User user) {
 		try {
 			return repository.save(user);
-		} catch (RuntimeException e) {
+		} 
+		catch (ConstraintViolationException e) {
+			throw new ValidationException(e.getMessage());
+		}		
+		catch (RuntimeException e) {
 			e.printStackTrace();
 			return null;
-		}
+		} 
 	}
 
 	public void delete(Long id) {
@@ -56,6 +63,8 @@ public class UserServices {
 			return repository.save(user);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Resource not found. Id "+id) ;
+		} catch (TransactionSystemException e) {
+			throw new ValidationException(e.getMostSpecificCause());
 		}
 	}
 
