@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -32,7 +34,12 @@ public class CategoryServices {
 	}
 	
 	public Category insert(Category cat) {
-		return repository.save(cat);
+		
+		try {
+			return repository.save(cat);
+		} catch (ConstraintViolationException e) {
+			throw new ValidationException(e.getMessage());
+		}
 	}
 	
 	public void delete(Long id) {
@@ -54,6 +61,8 @@ public class CategoryServices {
 			return repository.save(cat);
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException("Resource not found. Id "+id);
+		} catch (ConstraintViolationException e) {
+			throw new ValidationException(e.getMessage());
 		}
 	}
 	public void updateData(Category category, Category obj) {
